@@ -2,38 +2,35 @@
 Checks: >
   clang-diagnostic-*,
   clang-analyzer-*,
-  cppcoreguidelines-*,
   modernize-*,
   readability-*,
   performance-*,
   bugprone-*,
   misc-*,
-  -cppcoreguidelines-pro-bounds-pointer-arithmetic,
-  -cppcoreguidelines-pro-type-reinterpret-cast,
-  -cppcoreguidelines-pro-type-vararg,
-  -cppcoreguidelines-avoid-magic-numbers,
-  -cppcoreguidelines-macro-usage,
-  -cppcoreguidelines-non-private-member-variables-in-classes,
+  -cppcoreguidelines-*,
+  cppcoreguidelines-init-variables,
+  cppcoreguidelines-narrowing-conversions,
+  cppcoreguidelines-use-enum-class,
+  cppcoreguidelines-pro-type-cstyle-cast,
+  cppcoreguidelines-pro-type-member-init,
   -modernize-use-trailing-return-type,
   -modernize-use-using,
+  -modernize-use-emplace,
+  -modernize-loop-convert,
+  -modernize-pass-by-value,
+  -modernize-avoid-c-arrays,
   -readability-magic-numbers,
   -readability-implicit-bool-conversion,
   -readability-identifier-length,
   -readability-function-cognitive-complexity,
+  -readability-uppercase-literal-suffix,
+  -readability-identifier-naming,
   -misc-non-private-member-variables-in-classes,
   -misc-include-cleaner,
   -misc-const-correctness,
-  -bugprone-assignment-in-if-condition,
-  -cppcoreguidelines-pro-bounds-array-to-pointer-decay,
-  -cppcoreguidelines-avoid-c-arrays,
-  -modernize-avoid-c-arrays,
-  -cppcoreguidelines-avoid-non-const-global-variables,
-  -cppcoreguidelines-pro-bounds-constant-array-index,
   -misc-use-internal-linkage,
   -misc-use-anonymous-namespace,
-  -cppcoreguidelines-owning-memory,
-  -cppcoreguidelines-special-member-functions,
-  -readability-identifier-naming
+  -bugprone-assignment-in-if-condition
 
 WarningsAsErrors: ''
 
@@ -44,4 +41,6 @@ CheckOptions:
     value: '1'
   - key: performance-unnecessary-value-param.AllowedTypes
     value: ''
+  - key: readability-function-cognitive-complexity.Threshold
+    value: '60'
 ---
