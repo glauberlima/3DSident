@@ -5,5 +5,5 @@
 namespace Log {
     Result Open(void);
     Result Close(void);
-    void Error(const char *data, ...);
-}
+    void Error(const char* data, ...);
+} // namespace Log

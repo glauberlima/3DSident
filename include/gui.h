@@ -6,4 +6,4 @@ namespace GUI {
     void Init(void);
     void Exit(void);
     void MainMenu(void);
-}
+} // namespace GUI

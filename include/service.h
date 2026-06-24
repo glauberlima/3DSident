@@ -3,24 +3,24 @@
 #include <3ds.h>
 
 typedef struct {
-    const char *kernelVersion;
-    const char *firmVersion;
-    const char *systemVersion;
-    const char *initialVersion;
-    const char *sdmcCid;
-    const char *nandCid;
+    const char* kernelVersion;
+    const char* firmVersion;
+    const char* systemVersion;
+    const char* initialVersion;
+    const char* sdmcCid;
+    const char* nandCid;
     u64 deviceId;
 } KernelInfo;
 
 typedef struct {
-    const char *model;
-    const char *hardware;
-    const char *region;
-    const char *language;
+    const char* model;
+    const char* hardware;
+    const char* region;
+    const char* language;
     u64 localFriendCodeSeed;
-    const char *nandLocalFriendCodeSeed;
-    const char *macAddress;
-    u8 *serialNumber;
+    const char* nandLocalFriendCodeSeed;
+    const char* macAddress;
+    u8* serialNumber;
     int checkDigit;
     u64 soapId;
 } SystemInfo;
@@ -28,26 +28,26 @@ typedef struct {
 typedef struct {
     u32 persistentID;
     u64 transferableIdBase;
-    const char *accountId;
-    const char *countryName;
+    const char* accountId;
+    const char* countryName;
     u32 principalID;
-    const char *status;
+    const char* status;
 } NNIDInfo;
 
 typedef struct {
-    const char *username;
-    const char *birthday;
-    const char *eulaVersion;
-    const char *parentalPin;
-    const char *parentalEmail;
-    const char *parentalSecretAnswer;
+    const char* username;
+    const char* birthday;
+    const char* eulaVersion;
+    const char* parentalPin;
+    const char* parentalEmail;
+    const char* parentalSecretAnswer;
 } ConfigInfo;
 
 typedef struct {
-    const char *screenUpper;
-    const char *screenLower;
-    const char *soundOutputMode;
-    const char *autoBrightnessStatus;
+    const char* screenUpper;
+    const char* screenLower;
+    const char* soundOutputMode;
+    const char* autoBrightnessStatus;
 } HardwareInfo;
 
 typedef struct {
@@ -70,7 +70,7 @@ typedef struct {
     u32 sdTitleCount;
     u32 nandTitleCount;
     u32 ticketCount;
-    const char *manufacturingDate;
+    const char* manufacturingDate;
 } MiscInfo;
 
 typedef struct {
@@ -98,12 +98,12 @@ typedef struct {
 } SystemStateInfo;
 
 namespace ACI {
-    Result GetSecurityMode(acSecurityMode *mode);
-    Result GetPassphrase(char *passphrase);
-}
+    Result GetSecurityMode(acSecurityMode* mode);
+    Result GetPassphrase(char* passphrase);
+} // namespace ACI
 
 namespace MCUHWC {
-    Result GetBatteryTemperature(u8 *temp);
+    Result GetBatteryTemperature(u8* temp);
 }
 
 namespace Service {
@@ -118,4 +118,4 @@ namespace Service {
     StorageInfo GetStorageInfo(void);
     MiscInfo GetMiscInfo(void);
     SystemStateInfo GetSystemStateInfo(void);
-}
+} // namespace Service

@@ -177,7 +177,11 @@ ifneq ($(ROMFS),)
 	export _3DSXFLAGS += --romfs=$(CURDIR)/$(ROMFS)
 endif
 
-.PHONY: all clean
+CLANG_FORMAT	:=	/opt/homebrew/opt/llvm@21/bin/clang-format
+CLANG_TIDY	:=	/opt/homebrew/opt/llvm@21/bin/clang-tidy
+SOURCES_ALL	:=	$(wildcard $(SOURCES)/*.cpp) $(wildcard $(INCLUDES)/*.h)
+
+.PHONY: all clean format tidy
 
 #---------------------------------------------------------------------------------
 MAKEROM      ?= makerom
@@ -229,6 +233,17 @@ endif
 clean:
 	@echo clean ...
 	@rm -fr $(BUILD) $(TARGET).3dsx $(TARGET).cia $(TARGET).smdh $(TARGET).elf $(GFXBUILD)
+
+#---------------------------------------------------------------------------------
+format:
+	@echo formatting ...
+	@$(CLANG_FORMAT) -i $(SOURCES_ALL)
+
+#---------------------------------------------------------------------------------
+tidy:
+	@echo running clang-tidy ...
+	@$(CLANG_TIDY) $(wildcard $(SOURCES)/*.cpp) --config-file=$(TOPDIR)/.clang-tidy -p $(TOPDIR)/compile_commands.json \
+		--extra-arg=-Wno-error --extra-arg="-D_REENT_SMALL"
 
 #---------------------------------------------------------------------------------
 $(GFXBUILD)/%.t3x	$(BUILD)/%.h	:	%.t3s

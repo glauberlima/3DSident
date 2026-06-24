@@ -2,7 +2,7 @@
 #include "log.h"
 #include "utils.h"
 
-#define REG_LCD_TOP_SCREEN    (u32)0x202200
+#define REG_LCD_TOP_SCREEN (u32)0x202200
 #define REG_LCD_BOTTOM_SCREEN (u32)0x202A00
 
 namespace Hardware {
@@ -15,7 +15,7 @@ namespace Hardware {
     Result GetScreenType(gspLcdScreenType& top, gspLcdScreenType& bottom) {
         Result ret = 0;
         u8 vendors = 0;
-        
+
         if (!Utils::IsNew3DS()) {
             top = GSPLCD_SCREEN_TN;
             bottom = GSPLCD_SCREEN_TN;
@@ -33,32 +33,32 @@ namespace Hardware {
         }
 
         switch ((vendors >> 4) & 0xF) {
-            case 0x01: // 0x01 = JDI => IPS
-                top = GSPLCD_SCREEN_IPS;
-                break;
-                
-            case 0x0C: // 0x0C = SHARP => TN
-                top = GSPLCD_SCREEN_TN;
-                break;
-            default:
-                top = GSPLCD_SCREEN_UNK;
-                break;
+        case 0x01: // 0x01 = JDI => IPS
+            top = GSPLCD_SCREEN_IPS;
+            break;
+
+        case 0x0C: // 0x0C = SHARP => TN
+            top = GSPLCD_SCREEN_TN;
+            break;
+        default:
+            top = GSPLCD_SCREEN_UNK;
+            break;
         }
 
         switch (vendors & 0xF) {
-            case 0x01: // 0x01 = JDI => IPS
-                bottom = GSPLCD_SCREEN_IPS;
-                break;
-                
-            case 0x0C: // 0x0C = SHARP => TN
-                bottom = GSPLCD_SCREEN_TN;
-                break;
-                
-            default:
-                bottom = GSPLCD_SCREEN_UNK;
-                break;
+        case 0x01: // 0x01 = JDI => IPS
+            bottom = GSPLCD_SCREEN_IPS;
+            break;
+
+        case 0x0C: // 0x0C = SHARP => TN
+            bottom = GSPLCD_SCREEN_TN;
+            break;
+
+        default:
+            bottom = GSPLCD_SCREEN_UNK;
+            break;
         }
-        
+
         gspLcdExit();
         return 0;
     }
@@ -107,21 +107,18 @@ namespace Hardware {
         return detected;
     }
 
-    const char *GetSoundOutputMode(void) {
+    const char* GetSoundOutputMode(void) {
         Result ret = 0;
         u8 data;
-        const char *mode[] =  {
-            "Mono",
-            "Stereo",
-            "Surround"
-        };
+        const char* mode[] = {"Mono", "Stereo", "Surround"};
 
         if (R_FAILED(ret = CFGU_GetConfigInfoBlk2(sizeof(data), 0x00070001, std::addressof(data)))) {
             Log::Error("%s failed: 0x%x\n", __func__, ret);
             return "unknown";
         }
 
-        if (data >= 3) return "unknown";
+        if (data >= 3)
+            return "unknown";
         return mode[data];
     }
 
@@ -136,14 +133,15 @@ namespace Hardware {
 
         return brightness;
     }
-    
-    const char *GetAutoBrightnessStatus(void) {
+
+    const char* GetAutoBrightnessStatus(void) {
         AutoBrightnessBlock autoBrightnessBlock;
-        
-        if (R_FAILED(CFG_GetConfigInfoBlk8(sizeof(AutoBrightnessBlock), 0x00050009, std::addressof(autoBrightnessBlock)))) {
+
+        if (R_FAILED(
+                CFG_GetConfigInfoBlk8(sizeof(AutoBrightnessBlock), 0x00050009, std::addressof(autoBrightnessBlock)))) {
             return "unknown";
         }
-        
-        return autoBrightnessBlock.autoBrightnessEnabled? "enabled" : "disabled";
+
+        return autoBrightnessBlock.autoBrightnessEnabled ? "enabled" : "disabled";
     }
-}
+} // namespace Hardware

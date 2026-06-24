@@ -1,15 +1,15 @@
-#include "sprites.h"
 #include "textures.h"
+#include "sprites.h"
 
-C2D_Image banner, driveIcon, menuIcon[10], btnA, btnB, btnX, btnY, btnStartSelect, btnL, btnR,
-    btnZL, btnZR, btnDpadh, btnDpadv, btnCpad, btnCstick, btnHome, cursor, volumeIcon;
+C2D_Image banner, driveIcon, menuIcon[10], btnA, btnB, btnX, btnY, btnStartSelect, btnL, btnR, btnZL, btnZR, btnDpadh,
+    btnDpadv, btnCpad, btnCstick, btnHome, cursor, volumeIcon;
 
 namespace Textures {
     static C2D_SpriteSheet spritesheet;
-    
+
     void Init(void) {
         spritesheet = C2D_SpriteSheetLoad("romfs:/res/drawable/sprites.t3x");
-        
+
         banner = C2D_SpriteSheetGetImage(spritesheet, sprites_icon_idx);
         driveIcon = C2D_SpriteSheetGetImage(spritesheet, sprites_drive_idx);
 
@@ -47,4 +47,4 @@ namespace Textures {
     void Exit(void) {
         C2D_SpriteSheetFree(spritesheet);
     }
-}
+} // namespace Textures

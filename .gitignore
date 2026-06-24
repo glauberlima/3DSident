@@ -8,3 +8,7 @@ romfs/
 *.3dsx
 *.smdh
 *.cia
+
+# Tooling
+compile_commands.json
+events.json

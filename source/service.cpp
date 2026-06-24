@@ -13,53 +13,53 @@
 #include "wifi.h"
 
 namespace ACI {
-    Result GetSecurityMode(acSecurityMode *mode) {
+    Result GetSecurityMode(acSecurityMode* mode) {
         Result ret = 0;
-        u32 *cmdbuf = getThreadCommandBuffer();
-        
-        cmdbuf[0] = IPC_MakeHeader(0x413,0,0); // 0x04130000
-        
+        u32* cmdbuf = getThreadCommandBuffer();
+
+        cmdbuf[0] = IPC_MakeHeader(0x413, 0, 0); // 0x04130000
+
         if (R_FAILED(ret = svcSendSyncRequest(*acGetSessionHandle()))) {
             return ret;
         }
-        
+
         *mode = static_cast<acSecurityMode>(cmdbuf[2]);
         return static_cast<Result>(cmdbuf[1]);
     }
 
-    Result GetPassphrase(char *passphrase) {
+    Result GetPassphrase(char* passphrase) {
         Result ret = 0;
-        u32 *cmdbuf = getThreadCommandBuffer();
-        
-        cmdbuf[0] = IPC_MakeHeader(0x415,0,0); // 0x04150000
-        
+        u32* cmdbuf = getThreadCommandBuffer();
+
+        cmdbuf[0] = IPC_MakeHeader(0x415, 0, 0); // 0x04150000
+
         u32* staticbufs = getThreadStaticBuffers();
         staticbufs[0] = IPC_Desc_StaticBuffer(64, 0); // Password length is 64
         staticbufs[1] = reinterpret_cast<u32>(passphrase);
-        
+
         if (R_FAILED(ret = svcSendSyncRequest(*acGetSessionHandle()))) {
             return ret;
         }
 
         return static_cast<Result>(cmdbuf[1]);
     }
-}
+} // namespace ACI
 
 namespace MCUHWC {
-    Result GetBatteryTemperature(u8 *temp) {
+    Result GetBatteryTemperature(u8* temp) {
         Result ret = 0;
-        u32 *cmdbuf = getThreadCommandBuffer();
-        
-        cmdbuf[0] = IPC_MakeHeader(0xE,2,0); // 0x000E0080
-        
+        u32* cmdbuf = getThreadCommandBuffer();
+
+        cmdbuf[0] = IPC_MakeHeader(0xE, 2, 0); // 0x000E0080
+
         if (R_FAILED(ret = svcSendSyncRequest(*mcuHwcGetSessionHandle()))) {
             return ret;
         }
-        
+
         *temp = cmdbuf[2];
         return static_cast<Result>(cmdbuf[1]);
     }
-}
+} // namespace MCUHWC
 
 namespace Service {
     void Init(void) {
@@ -76,7 +76,7 @@ namespace Service {
     }
 
     KernelInfo GetKernelInfo(void) {
-        KernelInfo info = { 0 };
+        KernelInfo info = {0};
         info.kernelVersion = Kernel::GetVersion(VERSION_INFO_KERNEL);
         info.firmVersion = Kernel::GetVersion(VERSION_INFO_FIRM);
         info.systemVersion = Kernel::GetVersion(VERSION_INFO_SYSTEM);
@@ -88,7 +88,7 @@ namespace Service {
     }
 
     SystemInfo GetSystemInfo(void) {
-        SystemInfo info = { 0 };
+        SystemInfo info = {0};
         info.model = System::GetModel();
         info.hardware = System::GetRunningHW();
         info.region = System::GetRegion();
@@ -101,9 +101,9 @@ namespace Service {
         info.soapId = System::GetSoapId();
         return info;
     }
-    
+
     NNIDInfo GetNNIDInfo(void) {
-        NNIDInfo info = { 0 };
+        NNIDInfo info = {0};
         info.persistentID = NNID::GetPersistentId();
         info.transferableIdBase = NNID::GetTransferableIdBase();
         info.accountId = NNID::GetAccountId();
@@ -114,7 +114,7 @@ namespace Service {
     }
 
     ConfigInfo GetConfigInfo(void) {
-        ConfigInfo info = { 0 };
+        ConfigInfo info = {0};
         info.username = Config::GetUsername();
         info.birthday = Config::GetBirthday();
         info.eulaVersion = Config::GetEulaVersion();
@@ -125,7 +125,7 @@ namespace Service {
     }
 
     HardwareInfo GetHardwareInfo(void) {
-        HardwareInfo info = { 0 };
+        HardwareInfo info = {0};
 
         gspLcdScreenType top, bottom;
         Hardware::GetScreenType(top, bottom);
@@ -134,14 +134,14 @@ namespace Service {
             info.screenUpper = "unknown";
         }
         else {
-            info.screenUpper = (top == GSPLCD_SCREEN_TN)? "TN" : "IPS";
+            info.screenUpper = (top == GSPLCD_SCREEN_TN) ? "TN" : "IPS";
         }
 
         if (bottom == GSPLCD_SCREEN_UNK) {
             info.screenLower = "unknown";
         }
         else {
-            info.screenLower = (bottom == GSPLCD_SCREEN_TN)? "TN" : "IPS";
+            info.screenLower = (bottom == GSPLCD_SCREEN_TN) ? "TN" : "IPS";
         }
 
         info.soundOutputMode = Hardware::GetSoundOutputMode();
@@ -150,7 +150,7 @@ namespace Service {
     }
 
     MiscInfo GetMiscInfo(void) {
-        MiscInfo info = { 0 };
+        MiscInfo info = {0};
         info.sdTitleCount = Misc::GetTitleCount(MEDIATYPE_SD);
         info.nandTitleCount = Misc::GetTitleCount(MEDIATYPE_NAND);
         info.ticketCount = Misc::GetTicketCount();
@@ -159,7 +159,7 @@ namespace Service {
     }
 
     WifiInfo GetWifiInfo(void) {
-        WifiInfo info = { 0 };
+        WifiInfo info = {0};
 
         for (u32 i = 0; i < 3; i++) {
             if (R_SUCCEEDED(ACI_LoadNetworkSetting(i))) {
@@ -174,15 +174,15 @@ namespace Service {
     }
 
     StorageInfo GetStorageInfo(void) {
-        StorageInfo info = { 0 };
+        StorageInfo info = {0};
 
         for (int i = 0; i < 4; i++) {
             u64 free = 0, used = 0, total = 0;
             Storage::GetStorageForMedia(static_cast<FS_SystemMediaType>(i), free, used, total);
-            info.usedSize[i]  = used;
+            info.usedSize[i] = used;
             info.totalSize[i] = total;
-            Utils::GetSizeString(info.freeSizeString[i],  free);
-            Utils::GetSizeString(info.usedSizeString[i],  used);
+            Utils::GetSizeString(info.freeSizeString[i], free);
+            Utils::GetSizeString(info.usedSizeString[i], used);
             Utils::GetSizeString(info.totalSizeString[i], total);
         }
 
@@ -193,7 +193,7 @@ namespace Service {
 
     SystemStateInfo GetSystemStateInfo(void) {
         mcuHwcInit();
-        SystemStateInfo info = { 0 };
+        SystemStateInfo info = {0};
 
         if (R_FAILED(MCUHWC_ReadRegister(0x7F, std::addressof(info), sizeof(SystemStateInfo)))) {
             mcuHwcExit();
@@ -206,4 +206,4 @@ namespace Service {
         mcuHwcExit();
         return info;
     }
-}
+} // namespace Service
