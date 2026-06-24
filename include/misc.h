@@ -2,6 +2,6 @@
 
 namespace Misc {
     u32 GetTitleCount(FS_MediaType mediaType);
-    u32 GetTicketCount(void);
-    const char* GetManufacturingDate(void);
+    u32 GetTicketCount();
+    const char* GetManufacturingDate();
 } // namespace Misc

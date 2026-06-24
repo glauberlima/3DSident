@@ -6,6 +6,6 @@ namespace Storage {
     u64 GetFreeStorage(FS_SystemMediaType mediaType);
     u64 GetTotalStorage(FS_SystemMediaType mediaType);
     u64 GetUsedStorage(FS_SystemMediaType mediaType);
-    u64 GetClusterSize(void);
+    u64 GetClusterSize();
     void GetStorageForMedia(FS_SystemMediaType mediaType, u64& freeOut, u64& usedOut, u64& totalOut);
 } // namespace Storage

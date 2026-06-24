@@ -8,16 +8,16 @@
 #include "utils.h"
 
 namespace Kernel {
-    const char* GetInitialVersion(void) {
+    const char* GetInitialVersion() {
         Result ret = 0;
 
-        FS_Archive archive;
+        FS_Archive archive = 0;
         if (R_FAILED(ret = FS::OpenArchive(std::addressof(archive), ARCHIVE_NAND_TWL_FS))) {
             Log::Error("%s(FS::OpenArchive) failed: 0x%x\n", __func__, ret);
             return "unknown";
         }
 
-        Handle handle;
+        Handle handle = 0;
         if (R_FAILED(ret = FSUSER_OpenFileDirectly(&handle, ARCHIVE_NAND_TWL_FS, fsMakePath(PATH_EMPTY, ""),
                                                    fsMakePath(PATH_ASCII, "/sys/log/product.log"), FS_OPEN_READ, 0))) {
             Log::Error("%s(FSUSER_OpenFileDirectly) failed: 0x%x\n", __func__, ret);
@@ -70,10 +70,10 @@ namespace Kernel {
 
     const char* GetVersion(VersionInfo info) {
         Result ret = 0;
-        u32 osVersion = osGetKernelVersion();
+        u32 const osVersion = osGetKernelVersion();
 
-        OS_VersionBin* nver = new OS_VersionBin[sizeof(OS_VersionBin)];
-        OS_VersionBin* cver = new OS_VersionBin[sizeof(OS_VersionBin)];
+        auto* nver = new OS_VersionBin[sizeof(OS_VersionBin)];
+        auto* cver = new OS_VersionBin[sizeof(OS_VersionBin)];
 
         static char kernelString[128];
         static char firmString[128];
@@ -91,17 +91,17 @@ namespace Kernel {
             std::snprintf(systemVersionString, 128, "unknown");
         }
 
-        if (info == VERSION_INFO_KERNEL) {
+        if (info == VersionInfo::Kernel) {
             return kernelString;
         }
-        else if (info == VERSION_INFO_FIRM) {
+        if (info == VersionInfo::Firm) {
             return firmString;
         }
 
         return systemVersionString;
     }
 
-    const char* GetSdmcCid(void) {
+    const char* GetSdmcCid() {
         Result ret = 0;
         u8 buf[16];
 
@@ -112,14 +112,14 @@ namespace Kernel {
 
         static char cid[33];
         for (int i = 0; i < 16; ++i) {
-            std::snprintf(cid + i * 2, 3, "%02X", buf[i]);
+            std::snprintf(cid + (static_cast<std::ptrdiff_t>(i) * 2), 3, "%02X", buf[i]);
         }
 
         cid[32] = '\0';
         return cid;
     }
 
-    const char* GetNandCid(void) {
+    const char* GetNandCid() {
         Result ret = 0;
         u8 buf[16];
 
@@ -130,14 +130,14 @@ namespace Kernel {
 
         static char cid[33];
         for (int i = 0; i < 16; ++i) {
-            std::snprintf(cid + i * 2, 3, "%02X", buf[i]);
+            std::snprintf(cid + (static_cast<std::ptrdiff_t>(i) * 2), 3, "%02X", buf[i]);
         }
 
         cid[32] = '\0';
         return cid;
     }
 
-    u32 GetDeviceId(void) {
+    u32 GetDeviceId() {
         Result ret = 0;
         u32 id = 0;
 

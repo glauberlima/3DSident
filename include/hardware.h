@@ -1,16 +1,17 @@
 #pragma once
 
 #include <3ds.h>
+#include <cstdint>
 
-typedef enum { GSPLCD_SCREEN_TN, GSPLCD_SCREEN_IPS, GSPLCD_SCREEN_UNK } gspLcdScreenType;
+enum class GspLcdScreenType : std::uint8_t { TN, IPS, Unknown };
 
 namespace Hardware {
-    Result GetScreenType(gspLcdScreenType& top, gspLcdScreenType& bottom);
-    bool GetAudioJackStatus(void);
-    bool GetCardSlotStatus(void);
-    FS_CardType GetCardType(void);
-    bool IsSdInserted(void);
-    const char* GetSoundOutputMode(void);
+    Result GetScreenType(GspLcdScreenType& top, GspLcdScreenType& bottom);
+    bool GetAudioJackStatus();
+    bool GetCardSlotStatus();
+    FS_CardType GetCardType();
+    bool IsSdInserted();
+    const char* GetSoundOutputMode();
     u32 GetBrightness(u32 screen);
-    const char* GetAutoBrightnessStatus(void);
+    const char* GetAutoBrightnessStatus();
 } // namespace Hardware

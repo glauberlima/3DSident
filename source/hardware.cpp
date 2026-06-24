@@ -2,8 +2,8 @@
 #include "log.h"
 #include "utils.h"
 
-#define REG_LCD_TOP_SCREEN (u32)0x202200
-#define REG_LCD_BOTTOM_SCREEN (u32)0x202A00
+#define REG_LCD_TOP_SCREEN static_cast<u32>(0x202200)
+#define REG_LCD_BOTTOM_SCREEN static_cast<u32>(0x202A00)
 
 namespace Hardware {
     struct AutoBrightnessBlock {
@@ -12,13 +12,14 @@ namespace Hardware {
         u8 unk2[3];
     };
 
-    Result GetScreenType(gspLcdScreenType& top, gspLcdScreenType& bottom) {
+    // NOLINTNEXTLINE(bugprone-easily-swappable-parameters)
+    Result GetScreenType(GspLcdScreenType& top, GspLcdScreenType& bottom) {
         Result ret = 0;
         u8 vendors = 0;
 
         if (!Utils::IsNew3DS()) {
-            top = GSPLCD_SCREEN_TN;
-            bottom = GSPLCD_SCREEN_TN;
+            top = GspLcdScreenType::TN;
+            bottom = GspLcdScreenType::TN;
             return 0;
         }
 
@@ -33,29 +34,26 @@ namespace Hardware {
         }
 
         switch ((vendors >> 4) & 0xF) {
-        case 0x01: // 0x01 = JDI => IPS
-            top = GSPLCD_SCREEN_IPS;
+        case 0x01: // JDI => IPS
+            top = GspLcdScreenType::IPS;
             break;
-
-        case 0x0C: // 0x0C = SHARP => TN
-            top = GSPLCD_SCREEN_TN;
+        case 0x0C: // SHARP => TN
+            top = GspLcdScreenType::TN;
             break;
         default:
-            top = GSPLCD_SCREEN_UNK;
+            top = GspLcdScreenType::Unknown;
             break;
         }
 
         switch (vendors & 0xF) {
-        case 0x01: // 0x01 = JDI => IPS
-            bottom = GSPLCD_SCREEN_IPS;
+        case 0x01: // JDI => IPS
+            bottom = GspLcdScreenType::IPS;
             break;
-
-        case 0x0C: // 0x0C = SHARP => TN
-            bottom = GSPLCD_SCREEN_TN;
+        case 0x0C: // SHARP => TN
+            bottom = GspLcdScreenType::TN;
             break;
-
         default:
-            bottom = GSPLCD_SCREEN_UNK;
+            bottom = GspLcdScreenType::Unknown;
             break;
         }
 
@@ -63,7 +61,7 @@ namespace Hardware {
         return 0;
     }
 
-    bool GetAudioJackStatus(void) {
+    bool GetAudioJackStatus() {
         Result ret = 0;
         bool status = false;
 
@@ -74,7 +72,7 @@ namespace Hardware {
         return status;
     }
 
-    bool GetCardSlotStatus(void) {
+    bool GetCardSlotStatus() {
         Result ret = 0;
         bool status = false;
 
@@ -85,9 +83,9 @@ namespace Hardware {
         return status;
     }
 
-    FS_CardType GetCardType(void) {
+    FS_CardType GetCardType() {
         Result ret = 0;
-        FS_CardType type;
+        FS_CardType type = CARD_CTR;
 
         if (R_FAILED(ret = FSUSER_GetCardType(std::addressof(type)))) {
             return CARD_CTR;
@@ -96,7 +94,7 @@ namespace Hardware {
         return type;
     }
 
-    bool IsSdInserted(void) {
+    bool IsSdInserted() {
         Result ret = 0;
         bool detected = false;
 
@@ -107,18 +105,19 @@ namespace Hardware {
         return detected;
     }
 
-    const char* GetSoundOutputMode(void) {
+    const char* GetSoundOutputMode() {
         Result ret = 0;
-        u8 data;
-        const char* mode[] = {"Mono", "Stereo", "Surround"};
+        u8 data = 0;
+        const char* const mode[] = {"Mono", "Stereo", "Surround"};
 
         if (R_FAILED(ret = CFGU_GetConfigInfoBlk2(sizeof(data), 0x00070001, std::addressof(data)))) {
             Log::Error("%s failed: 0x%x\n", __func__, ret);
             return "unknown";
         }
 
-        if (data >= 3)
+        if (data >= 3) {
             return "unknown";
+        }
         return mode[data];
     }
 
@@ -134,8 +133,8 @@ namespace Hardware {
         return brightness;
     }
 
-    const char* GetAutoBrightnessStatus(void) {
-        AutoBrightnessBlock autoBrightnessBlock;
+    const char* GetAutoBrightnessStatus() {
+        AutoBrightnessBlock autoBrightnessBlock = {};
 
         if (R_FAILED(
                 CFG_GetConfigInfoBlk8(sizeof(AutoBrightnessBlock), 0x00050009, std::addressof(autoBrightnessBlock)))) {

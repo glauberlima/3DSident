@@ -3,7 +3,7 @@
 #include "utils.h"
 
 namespace Utils {
-    bool IsNew3DS(void) {
+    bool IsNew3DS() {
         bool check = false;
 
         if (R_FAILED(APT_CheckNew3DS(std::addressof(check)))) {
@@ -14,8 +14,8 @@ namespace Utils {
     }
 
     // Thanks TheOfficialFloW
-    void GetSizeString(char* string, u64 size) {
-        double double_size = static_cast<double>(size);
+    void GetSizeString(char* string, u64 size) { // NOLINT(readability-non-const-parameter)
+        auto double_size = static_cast<double>(size);
         int i = 0;
         const char* units[] = {"B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"};
 
@@ -41,9 +41,10 @@ namespace Utils {
         return "";
     }
 
-    void UTF16ToUTF8(u8* buf, const u16* data, size_t bufSize) {
-        if (bufSize == 0)
+    void UTF16ToUTF8(u8* buf, const u16* data, size_t bufSize) { // NOLINT(readability-non-const-parameter)
+        if (bufSize == 0) {
             return;
+        }
         ssize_t units = utf16_to_utf8(buf, data, bufSize - 1);
 
         if (units < 0 || static_cast<size_t>(units) >= bufSize) {

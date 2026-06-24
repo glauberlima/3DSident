@@ -5,7 +5,7 @@
 #include "service.h"
 
 namespace Wifi {
-    const char* GetSSID(void) {
+    const char* GetSSID() {
         Result ret = 0;
         static char ssid[32];
 
@@ -17,7 +17,7 @@ namespace Wifi {
         return ssid;
     }
 
-    const char* GetPassphrase(void) {
+    const char* GetPassphrase() {
         Result ret = 0;
         static char passphrase[64];
 
@@ -29,7 +29,7 @@ namespace Wifi {
         return passphrase;
     }
 
-    const char* GetSecurityMode(void) {
+    const char* GetSecurityMode() {
         Result ret = 0;
         acSecurityMode mode = AC_OPEN;
 
@@ -41,8 +41,9 @@ namespace Wifi {
             return "unknown";
         }
 
-        if (static_cast<size_t>(mode) >= 8)
+        if (static_cast<size_t>(mode) >= 8) {
             return "unknown";
+        }
         return securityMode[mode];
     }
 } // namespace Wifi

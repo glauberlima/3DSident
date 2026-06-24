@@ -9,7 +9,7 @@ namespace Log {
     static Handle handle = 0;
     static u64 offset = 0;
 
-    Result Open(void) {
+    Result Open() {
         Result ret = 0;
         const char* path = "/3ds/3dsident.log";
 
@@ -33,7 +33,7 @@ namespace Log {
         return 0;
     }
 
-    Result Close(void) {
+    Result Close() {
         Result ret = 0;
 
         if (R_FAILED(ret = FSFILE_Close(handle))) {
@@ -51,7 +51,7 @@ namespace Log {
         }
 
         char buf[256];
-        va_list args;
+        va_list args; // NOLINT(cppcoreguidelines-init-variables)
         va_start(args, data);
         std::vsnprintf(buf, sizeof(buf), data, args);
         va_end(args);

@@ -1,10 +1,10 @@
 #pragma once
 
 namespace NNID {
-    u32 GetPersistentId(void);
-    u64 GetTransferableIdBase(void);
-    const char* GetAccountId(void);
-    const char* GetCountryName(void);
-    u32 GetPrincipalId(void);
-    const char* IsServerAccountDeleted(void);
+    u32 GetPersistentId();
+    u64 GetTransferableIdBase();
+    const char* GetAccountId();
+    const char* GetCountryName();
+    u32 GetPrincipalId();
+    const char* IsServerAccountDeleted();
 } // namespace NNID

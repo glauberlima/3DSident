@@ -34,9 +34,9 @@ namespace Config {
         u8 brightnessLevel;
     };
 
-    const char* GetUsername(void) {
+    const char* GetUsername() {
         Result ret = 0;
-        UsernameBlock usernameBlock;
+        UsernameBlock usernameBlock = {};
 
         if (R_FAILED(ret = CFGU_GetConfigInfoBlk2(sizeof(UsernameBlock), 0x000A0000, std::addressof(usernameBlock)))) {
             Log::Error("%s failed: 0x%x\n", __func__, ret);
@@ -48,29 +48,30 @@ namespace Config {
         return reinterpret_cast<const char*>(username);
     }
 
-    const char* GetBirthday(void) {
+    const char* GetBirthday() {
         Result ret = 0;
-        BirthdayBlock birthdayBlock;
+        BirthdayBlock birthdayBlock = {};
 
         if (R_FAILED(ret = CFGU_GetConfigInfoBlk2(sizeof(BirthdayBlock), 0x000A0001, std::addressof(birthdayBlock)))) {
             Log::Error("%s failed: 0x%x\n", __func__, ret);
             return "unknown";
         }
 
-        const char* months[] = {"January", "February", "March",     "April",   "May",      "June",
-                                "July",    "August",   "September", "October", "November", "December"};
+        const char* const months[] = {"January", "February", "March",     "April",   "May",      "June",
+                                      "July",    "August",   "September", "October", "November", "December"};
 
-        if (birthdayBlock.month < 1 || birthdayBlock.month > 12)
+        if (birthdayBlock.month < 1 || birthdayBlock.month > 12) {
             return "unknown";
+        }
 
         static char date[15];
         std::snprintf(date, 15, "%s %02d", months[birthdayBlock.month - 1], birthdayBlock.day);
         return date;
     }
 
-    const char* GetEulaVersion(void) {
+    const char* GetEulaVersion() {
         Result ret = 0;
-        EulaVersionBlock eulaVersionBlock;
+        EulaVersionBlock eulaVersionBlock = {};
 
         if (R_FAILED(
                 ret = CFGU_GetConfigInfoBlk2(sizeof(EulaVersionBlock), 0x000D0000, std::addressof(eulaVersionBlock)))) {
@@ -83,9 +84,9 @@ namespace Config {
         return version;
     }
 
-    const char* GetParentalPin(void) {
+    const char* GetParentalPin() {
         Result ret = 0;
-        ParentalControlBlock parentalControlBlock;
+        ParentalControlBlock parentalControlBlock = {};
 
         if (R_FAILED(ret = CFG_GetConfigInfoBlk8(sizeof(ParentalControlBlock), 0x00100001,
                                                  std::addressof(parentalControlBlock)))) {
@@ -99,7 +100,7 @@ namespace Config {
         return pin;
     }
 
-    const char* GetParentalEmail(void) {
+    const char* GetParentalEmail() {
         Result ret = 0;
         u8 data[0x200];
 
@@ -113,9 +114,9 @@ namespace Config {
         return email;
     }
 
-    const char* GetParentalSecretAnswer(void) {
+    const char* GetParentalSecretAnswer() {
         Result ret = 0;
-        ParentalControlBlock parentalControlBlock;
+        ParentalControlBlock parentalControlBlock = {};
 
         if (R_FAILED(ret = CFG_GetConfigInfoBlk8(sizeof(ParentalControlBlock), 0x00100001,
                                                  std::addressof(parentalControlBlock)))) {
@@ -128,8 +129,8 @@ namespace Config {
         return reinterpret_cast<const char*>(out);
     }
 
-    const char* GetPowersaveStatus(void) {
-        BacklightControlBlock backlightControlBlock;
+    const char* GetPowersaveStatus() {
+        BacklightControlBlock backlightControlBlock = {};
 
         if (R_FAILED(CFG_GetConfigInfoBlk8(sizeof(BacklightControlBlock), 0x00050001,
                                            std::addressof(backlightControlBlock)))) {

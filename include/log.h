@@ -3,7 +3,7 @@
 #include <3ds.h>
 
 namespace Log {
-    Result Open(void);
-    Result Close(void);
+    Result Open();
+    Result Close();
     void Error(const char* data, ...);
 } // namespace Log

@@ -7,7 +7,7 @@ C2D_Image banner, driveIcon, menuIcon[10], btnA, btnB, btnX, btnY, btnStartSelec
 namespace Textures {
     static C2D_SpriteSheet spritesheet;
 
-    void Init(void) {
+    void Init() {
         spritesheet = C2D_SpriteSheetLoad("romfs:/res/drawable/sprites.t3x");
 
         banner = C2D_SpriteSheetGetImage(spritesheet, sprites_icon_idx);
@@ -44,7 +44,7 @@ namespace Textures {
         volumeIcon = C2D_SpriteSheetGetImage(spritesheet, sprites_volume_idx);
     }
 
-    void Exit(void) {
+    void Exit() {
         C2D_SpriteSheetFree(spritesheet);
     }
 } // namespace Textures

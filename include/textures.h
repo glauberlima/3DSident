@@ -6,6 +6,6 @@ extern C2D_Image banner, driveIcon, menuIcon[10], btnA, btnB, btnX, btnY, btnSta
     btnDpadh, btnDpadv, btnCpad, btnCstick, btnHome, cursor, volumeIcon;
 
 namespace Textures {
-    void Init(void);
-    void Exit(void);
+    void Init();
+    void Exit();
 } // namespace Textures

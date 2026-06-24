@@ -4,9 +4,9 @@
 #include "service.h"
 
 namespace NNID {
-    u32 GetPersistentId(void) {
+    u32 GetPersistentId() {
         Result ret = 0;
-        u32 persistentId;
+        u32 persistentId = 0;
 
         if (R_FAILED(ret = ACT_GetAccountInfo(std::addressof(persistentId), sizeof(u32), ACT_DEFAULT_ACCOUNT,
                                               INFO_TYPE_PERSISTENT_ID))) {
@@ -17,9 +17,9 @@ namespace NNID {
         return persistentId;
     }
 
-    u64 GetTransferableIdBase(void) {
+    u64 GetTransferableIdBase() {
         Result ret = 0;
-        u64 transferableIdBase;
+        u64 transferableIdBase = 0;
 
         if (R_FAILED(ret = ACT_GetAccountInfo(std::addressof(transferableIdBase), sizeof(u64), ACT_DEFAULT_ACCOUNT,
                                               INFO_TYPE_COMMON_TRANSFERABLE_ID_BASE))) {
@@ -30,7 +30,7 @@ namespace NNID {
         return transferableIdBase;
     }
 
-    const char* GetAccountId(void) {
+    const char* GetAccountId() {
         Result ret = 0;
         static char accountId[0x11];
 
@@ -43,7 +43,7 @@ namespace NNID {
         return accountId;
     }
 
-    const char* GetCountryName(void) {
+    const char* GetCountryName() {
         Result ret = 0;
         static char countryName[0x3];
 
@@ -56,9 +56,9 @@ namespace NNID {
         return countryName;
     }
 
-    u32 GetPrincipalId(void) {
+    u32 GetPrincipalId() {
         Result ret = 0;
-        u32 principalId;
+        u32 principalId = 0;
 
         if (R_FAILED(ret = ACT_GetAccountInfo(std::addressof(principalId), sizeof(u32), ACT_DEFAULT_ACCOUNT,
                                               INFO_TYPE_PRINCIPAL_ID))) {
@@ -69,9 +69,9 @@ namespace NNID {
         return principalId;
     }
 
-    const char* IsServerAccountDeleted(void) {
+    const char* IsServerAccountDeleted() {
         Result ret = 0;
-        u8 accountDeleted;
+        u8 accountDeleted = 0;
 
         if (R_FAILED(ret = ACT_GetAccountInfo(std::addressof(accountDeleted), sizeof(u8), ACT_DEFAULT_ACCOUNT,
                                               INFO_TYPE_IS_SERVER_ACCOUNT_DELETED))) {

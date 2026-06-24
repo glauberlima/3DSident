@@ -107,15 +107,15 @@ namespace MCUHWC {
 }
 
 namespace Service {
-    void Init(void);
-    void Exit(void);
-    KernelInfo GetKernelInfo(void);
-    SystemInfo GetSystemInfo(void);
-    NNIDInfo GetNNIDInfo(void);
-    ConfigInfo GetConfigInfo(void);
-    HardwareInfo GetHardwareInfo(void);
-    WifiInfo GetWifiInfo(void);
-    StorageInfo GetStorageInfo(void);
-    MiscInfo GetMiscInfo(void);
-    SystemStateInfo GetSystemStateInfo(void);
+    void Init();
+    void Exit();
+    KernelInfo GetKernelInfo();
+    SystemInfo GetSystemInfo();
+    NNIDInfo GetNNIDInfo();
+    ConfigInfo GetConfigInfo();
+    HardwareInfo GetHardwareInfo();
+    WifiInfo GetWifiInfo();
+    StorageInfo GetStorageInfo();
+    MiscInfo GetMiscInfo();
+    SystemStateInfo GetSystemStateInfo();
 } // namespace Service

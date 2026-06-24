@@ -62,24 +62,24 @@ namespace MCUHWC {
 } // namespace MCUHWC
 
 namespace Service {
-    void Init(void) {
+    void Init() {
         acInit();
         actInit(true);
         ACT_Initialize(0xB0002F0, 0, 0);
         amInit();
     }
 
-    void Exit(void) {
+    void Exit() {
         amExit();
         actExit();
         acExit();
     }
 
-    KernelInfo GetKernelInfo(void) {
-        KernelInfo info = {0};
-        info.kernelVersion = Kernel::GetVersion(VERSION_INFO_KERNEL);
-        info.firmVersion = Kernel::GetVersion(VERSION_INFO_FIRM);
-        info.systemVersion = Kernel::GetVersion(VERSION_INFO_SYSTEM);
+    KernelInfo GetKernelInfo() {
+        KernelInfo info = {nullptr};
+        info.kernelVersion = Kernel::GetVersion(VersionInfo::Kernel);
+        info.firmVersion = Kernel::GetVersion(VersionInfo::Firm);
+        info.systemVersion = Kernel::GetVersion(VersionInfo::System);
         info.initialVersion = Kernel::GetInitialVersion();
         info.sdmcCid = Kernel::GetSdmcCid();
         info.nandCid = Kernel::GetNandCid();
@@ -87,8 +87,8 @@ namespace Service {
         return info;
     }
 
-    SystemInfo GetSystemInfo(void) {
-        SystemInfo info = {0};
+    SystemInfo GetSystemInfo() {
+        SystemInfo info = {nullptr};
         info.model = System::GetModel();
         info.hardware = System::GetRunningHW();
         info.region = System::GetRegion();
@@ -102,7 +102,7 @@ namespace Service {
         return info;
     }
 
-    NNIDInfo GetNNIDInfo(void) {
+    NNIDInfo GetNNIDInfo() {
         NNIDInfo info = {0};
         info.persistentID = NNID::GetPersistentId();
         info.transferableIdBase = NNID::GetTransferableIdBase();
@@ -113,8 +113,8 @@ namespace Service {
         return info;
     }
 
-    ConfigInfo GetConfigInfo(void) {
-        ConfigInfo info = {0};
+    ConfigInfo GetConfigInfo() {
+        ConfigInfo info = {nullptr};
         info.username = Config::GetUsername();
         info.birthday = Config::GetBirthday();
         info.eulaVersion = Config::GetEulaVersion();
@@ -124,24 +124,25 @@ namespace Service {
         return info;
     }
 
-    HardwareInfo GetHardwareInfo(void) {
-        HardwareInfo info = {0};
+    HardwareInfo GetHardwareInfo() {
+        HardwareInfo info = {nullptr};
 
-        gspLcdScreenType top, bottom;
+        GspLcdScreenType top = GspLcdScreenType::Unknown;
+        GspLcdScreenType bottom = GspLcdScreenType::Unknown;
         Hardware::GetScreenType(top, bottom);
 
-        if (top == GSPLCD_SCREEN_UNK) {
+        if (top == GspLcdScreenType::Unknown) {
             info.screenUpper = "unknown";
         }
         else {
-            info.screenUpper = (top == GSPLCD_SCREEN_TN) ? "TN" : "IPS";
+            info.screenUpper = (top == GspLcdScreenType::TN) ? "TN" : "IPS";
         }
 
-        if (bottom == GSPLCD_SCREEN_UNK) {
+        if (bottom == GspLcdScreenType::Unknown) {
             info.screenLower = "unknown";
         }
         else {
-            info.screenLower = (bottom == GSPLCD_SCREEN_TN) ? "TN" : "IPS";
+            info.screenLower = (bottom == GspLcdScreenType::TN) ? "TN" : "IPS";
         }
 
         info.soundOutputMode = Hardware::GetSoundOutputMode();
@@ -149,7 +150,7 @@ namespace Service {
         return info;
     }
 
-    MiscInfo GetMiscInfo(void) {
+    MiscInfo GetMiscInfo() {
         MiscInfo info = {0};
         info.sdTitleCount = Misc::GetTitleCount(MEDIATYPE_SD);
         info.nandTitleCount = Misc::GetTitleCount(MEDIATYPE_NAND);
@@ -158,8 +159,8 @@ namespace Service {
         return info;
     }
 
-    WifiInfo GetWifiInfo(void) {
-        WifiInfo info = {0};
+    WifiInfo GetWifiInfo() {
+        WifiInfo info = {false};
 
         for (u32 i = 0; i < 3; i++) {
             if (R_SUCCEEDED(ACI_LoadNetworkSetting(i))) {
@@ -173,11 +174,13 @@ namespace Service {
         return info;
     }
 
-    StorageInfo GetStorageInfo(void) {
+    StorageInfo GetStorageInfo() {
         StorageInfo info = {0};
 
         for (int i = 0; i < 4; i++) {
-            u64 free = 0, used = 0, total = 0;
+            u64 free = 0;
+            u64 used = 0;
+            u64 total = 0;
             Storage::GetStorageForMedia(static_cast<FS_SystemMediaType>(i), free, used, total);
             info.usedSize[i] = used;
             info.totalSize[i] = total;
@@ -191,7 +194,7 @@ namespace Service {
         return info;
     }
 
-    SystemStateInfo GetSystemStateInfo(void) {
+    SystemStateInfo GetSystemStateInfo() {
         mcuHwcInit();
         SystemStateInfo info = {0};
 

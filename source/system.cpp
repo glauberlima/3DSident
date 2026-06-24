@@ -7,7 +7,7 @@
 #include "system.h"
 
 namespace System {
-    const char* GetModel(void) {
+    const char* GetModel() {
         Result ret = 0;
         const char* models[] = {"OLD 3DS - CTR", "OLD 3DS XL - SPR", "NEW 3DS - KTR",
                                 "OLD 2DS - FTR", "NEW 3DS XL - RED", "NEW 2DS XL - JAN"};
@@ -18,12 +18,13 @@ namespace System {
             return "unknown";
         }
 
-        if (model >= 6)
+        if (model >= 6) {
             return "unknown";
+        }
         return models[model];
     }
 
-    const char* GetRegion(void) {
+    const char* GetRegion() {
         Result ret = 0;
         const char* regions[] = {"JPN", "USA", "EUR", "AUS", "CHN", "KOR", "TWN"};
 
@@ -33,12 +34,13 @@ namespace System {
             return "unknown";
         }
 
-        if (region >= 7)
+        if (region >= 7) {
             return "unknown";
+        }
         return regions[region];
     }
 
-    const char* GetFirmRegion(void) {
+    const char* GetFirmRegion() {
         Result ret = 0;
         const char* regions[] = {"J", "U", "E", "E", "C", "K", "T"};
 
@@ -48,12 +50,13 @@ namespace System {
             return "unknown";
         }
 
-        if (region >= 7)
+        if (region >= 7) {
             return "unknown";
+        }
         return regions[region];
     }
 
-    bool IsCoppacsSupported(void) {
+    bool IsCoppacsSupported() {
         Result ret = 0;
         u8 isCoppacs = 0;
 
@@ -62,10 +65,10 @@ namespace System {
             return false;
         }
 
-        return isCoppacs ? true : false;
+        return isCoppacs != 0;
     }
 
-    const char* GetLanguage(void) {
+    const char* GetLanguage() {
         Result ret = 0;
         const char* languages[] = {
             "Japanese",           "English", "French", "German",     "Italian", "Spanish",
@@ -77,31 +80,33 @@ namespace System {
             return "unknown";
         }
 
-        if (language >= 12)
+        if (language >= 12) {
             return "unknown";
+        }
         return languages[language];
     }
 
-    const char* GetMacAddress(void) {
-        u8* addr = OS_SharedConfig->wifi_macaddr;
+    const char* GetMacAddress() {
+        u8 const* addr = OS_SharedConfig->wifi_macaddr; // NOLINT(cppcoreguidelines-pro-type-cstyle-cast)
         static char macAddress[0x12];
         std::snprintf(macAddress, 0x12, "%02X:%02X:%02X:%02X:%02X:%02X", *addr, *(addr + 1), *(addr + 2), *(addr + 3),
                       *(addr + 4), *(addr + 5));
         return macAddress;
     }
 
-    const char* GetRunningHW(void) {
+    const char* GetRunningHW() {
         const char* runningHW[] = {"unknown",          "product",           "TS board",      "KMC debugger",
                                    "KMC capture",      "IS debugger",       "snake product", "snake IS debugger",
                                    "snake IS capture", "snake KMC debugger"};
 
-        u8 hw = OS_SharedConfig->running_hw;
-        if (hw >= 10)
+        u8 const hw = OS_SharedConfig->running_hw; // NOLINT(cppcoreguidelines-pro-type-cstyle-cast)
+        if (hw >= 10) {
             return "unknown";
+        }
         return runningHW[hw];
     }
 
-    u64 GetLocalFriendCodeSeed(void) {
+    u64 GetLocalFriendCodeSeed() {
         Result ret = 0;
         u64 seed = 0;
 
@@ -113,11 +118,11 @@ namespace System {
         return seed;
     }
 
-    const char* GetNandLocalFriendCodeSeed(void) {
+    const char* GetNandLocalFriendCodeSeed() {
         Result ret = 0;
-        Handle handle;
+        Handle handle = 0;
         u32 bytesread = 0;
-        FS_Archive nandArchive;
+        FS_Archive nandArchive = 0;
         char buf[7];
         static char out[11];
 
@@ -165,7 +170,7 @@ namespace System {
         return out;
     }
 
-    u8* GetSerialNumber(void) {
+    u8* GetSerialNumber() {
         Result ret = 0;
         static u8 serial[15];
 
@@ -178,11 +183,13 @@ namespace System {
     }
 
     int GetCheckDigit(const u8* serialNumber) {
-        int oddSum = 0, evenSum = 0, index = 1;
+        int oddSum = 0;
+        int evenSum = 0;
+        int index = 1;
 
         for (int i = 0; serialNumber[i] != '\0'; i++) {
             if (isdigit(serialNumber[i])) {
-                int digit = serialNumber[i] - '0';
+                int const digit = serialNumber[i] - '0';
 
                 if (index % 2 == 0) {
                     evenSum += digit;
@@ -195,11 +202,11 @@ namespace System {
             }
         }
 
-        int checkDigit = ((3 * evenSum) + oddSum) % 10;
+        int const checkDigit = ((3 * evenSum) + oddSum) % 10;
         return checkDigit == 0 ? 0 : 10 - checkDigit;
     }
 
-    u64 GetSoapId(void) {
+    u64 GetSoapId() {
         Result ret = 0;
         u32 id = 0;
 

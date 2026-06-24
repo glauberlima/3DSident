@@ -22,7 +22,7 @@ namespace FS {
     }
 
     bool FileExists(FS_Archive archive, const char* path) {
-        Handle handle;
+        Handle handle = 0;
 
         if (R_FAILED(FSUSER_OpenFile(&handle, archive, fsMakePath(PATH_ASCII, path), FS_OPEN_READ, 0))) {
             return false;

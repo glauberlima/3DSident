@@ -19,7 +19,7 @@ namespace Misc {
         return count;
     }
 
-    u32 GetTicketCount(void) {
+    u32 GetTicketCount() {
         Result ret = 0;
         u32 count = 0;
 
@@ -31,16 +31,16 @@ namespace Misc {
         return count;
     }
 
-    const char* GetManufacturingDate(void) {
+    const char* GetManufacturingDate() {
         Result ret = 0;
 
-        FS_Archive archive;
+        FS_Archive archive = 0;
         if (R_FAILED(ret = FS::OpenArchive(std::addressof(archive), ARCHIVE_NAND_TWL_FS))) {
             Log::Error("%s(FS::OpenArchive) failed: 0x%x\n", __func__, ret);
             return "unknown";
         }
 
-        Handle handle;
+        Handle handle = 0;
         if (R_FAILED(ret = FSUSER_OpenFileDirectly(&handle, ARCHIVE_NAND_TWL_FS, fsMakePath(PATH_EMPTY, ""),
                                                    fsMakePath(PATH_ASCII, "/sys/log/inspect.log"), FS_OPEN_READ, 0))) {
             Log::Error("%s(FSUSER_OpenFileDirectly) failed: 0x%x\n", __func__, ret);

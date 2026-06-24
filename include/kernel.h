@@ -1,11 +1,13 @@
 #pragma once
 
-typedef enum { VERSION_INFO_KERNEL = 0, VERSION_INFO_FIRM, VERSION_INFO_SYSTEM } VersionInfo;
+#include <cstdint>
+
+enum class VersionInfo : std::uint8_t { Kernel = 0, Firm, System };
 
 namespace Kernel {
-    const char* GetInitialVersion(void);
+    const char* GetInitialVersion();
     const char* GetVersion(VersionInfo info);
-    const char* GetSdmcCid(void);
-    const char* GetNandCid(void);
-    u32 GetDeviceId(void);
+    const char* GetSdmcCid();
+    const char* GetNandCid();
+    u32 GetDeviceId();
 } // namespace Kernel
